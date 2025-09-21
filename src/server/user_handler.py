@@ -824,6 +824,7 @@ class DownloadBookHandler(object):
 
             request = backData.req
             index = backData.index
+            Log.Info(f"下载线程-{index} 开始下载: {request.url}")
             try:
                 with Server().downloadSession[index].stream("GET", request.url, follow_redirects=True, headers=request.headers,
                                     timeout=backData.timeout, extensions=request.extend) as r:
