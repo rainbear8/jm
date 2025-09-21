@@ -132,6 +132,7 @@ class DownloadStatus(QtTaskBase):
             self.db.AddDownloadEpsDB(info)
 
     def TimeOutHandler(self):
+        from config.setting import Setting
         downloadNum = Setting.MultiNum.value
         addNum = downloadNum - len(self.downloadingList)
         if addNum > 0:
@@ -146,7 +147,6 @@ class DownloadStatus(QtTaskBase):
                 if addNum <= 0:
                     break
 
-        from config.setting import Setting
         convertNum = Setting.ConvertThreadNum.value
         addNum = convertNum - len(self.convertingList)
         if addNum > 0:
