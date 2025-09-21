@@ -76,7 +76,8 @@ class NasStatus(QtTaskBase):
             self.db.AddUploadDB(task)
 
     def TimeOutHandler(self):
-        downloadNum = config.DownloadThreadNum
+        from config.setting import Setting
+        downloadNum = Setting.DownloadThreadNum.value
         addNum = downloadNum - len(self.downloadingList)
         if addNum > 0:
             for task in list(self.downloadList):

@@ -834,13 +834,16 @@ class DownloadBookHandler(object):
                     now = time.time()
                     isAlreadySend = False
                     try:
+                        from config.setting import Setting
+                        chunk_size = Setting.ChunkSize.value
+                        progress_interval = Setting.ProgressInterval.value
                         addSize = 0
-                        for chunk in r.iter_bytes(chunk_size=1024):
+                        for chunk in r.iter_bytes(chunk_size=chunk_size):
                                 cur = time.time()
                                 tick = cur - now
                                 addSize += len(chunk)
                                 data += chunk
-                                if tick >= 0.1:
+                                if tick >= progress_interval:
                                     isAlreadySend = True
                                     if backData.bakParam and fileSize - addSize > 0:
                                         TaskBase.taskObj.downloadBack.emit(backData.bakParam, addSize, max(1, addSize, fileSize - getSize), b"")
@@ -971,7 +974,9 @@ class SpeedTestHandler(object):
                     now = time.time()
                     # 网速快，太卡了，优化成最多100ms一次
                     try:
-                        for chunk in r.iter_bytes(chunk_size=1024):
+                        from config.setting import Setting
+                        chunk_size = Setting.ChunkSize.value
+                        for chunk in r.iter_bytes(chunk_size=chunk_size):
                             getSize += len(chunk)
                             consume = time.time() - now
                             if consume >= 3.0:

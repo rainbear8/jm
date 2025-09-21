@@ -91,12 +91,13 @@ class Server(Singleton):
         self._inQueue = Queue()
         self._downloadQueue = Queue()
         self.threadHandler = 0
-        self.threadNum = config.ThreadNum
-
         from config.setting import Setting
+        self.threadNum = Setting.ThreadNum.value
         self.downloadNum = Setting.MultiNum.value
         self.threadSession = []
         self.downloadSession = []
+        self._downloadThreads = []
+        self._httpThreads = []
 
         for i in range(self.threadNum):
             self.threadSession.append(self.GetNewSession())
@@ -104,6 +105,7 @@ class Server(Singleton):
             thread.setName("HTTP-"+str(i))
             thread.setDaemon(True)
             thread.start()
+            self._httpThreads.append(thread)
 
         for i in range(self.downloadNum):
             self.downloadSession.append(self.GetNewSession())
@@ -111,13 +113,16 @@ class Server(Singleton):
             thread.setName("Download-" + str(i))
             thread.setDaemon(True)
             thread.start()
+            self._downloadThreads.append(thread)
 
     def GetNewSession(self, proxy=None):
         try:
-            return httpx.Client(http2=True, verify=False, trust_env=False, proxy=proxy)
+            timeout = httpx.Timeout(10.0, connect=5.0)
+            return httpx.Client(http2=True, verify=False, trust_env=False, proxy=proxy, timeout=timeout)
         except Exception as es:
             Log.Error(es)
-            return httpx.Client(http2=True, verify=False, trust_env=False)
+            timeout = httpx.Timeout(10.0, connect=5.0)
+            return httpx.Client(http2=True, verify=False, trust_env=False, timeout=timeout)
     
     def Run(self, index):
         while True:
@@ -136,6 +141,35 @@ class Server(Singleton):
             self._inQueue.put("")
         for i in range(self.downloadNum):
             self._downloadQueue.put("")
+
+    def UpdateDownloadThreads(self):
+        """动态更新下载线程数量"""
+        from config.setting import Setting
+        new_download_num = Setting.MultiNum.value
+
+        if new_download_num == self.downloadNum:
+            return
+
+        # 如果需要减少线程
+        if new_download_num < self.downloadNum:
+            # 停止多余的线程
+            for i in range(new_download_num, self.downloadNum):
+                self._downloadQueue.put("")
+            # 移除多余的session
+            self.downloadSession = self.downloadSession[:new_download_num]
+
+        # 如果需要增加线程
+        elif new_download_num > self.downloadNum:
+            # 添加新的session和线程
+            for i in range(self.downloadNum, new_download_num):
+                self.downloadSession.append(self.GetNewSession())
+                thread = threading.Thread(target=self.RunDownload, args=[i])
+                thread.setName("Download-" + str(i))
+                thread.setDaemon(True)
+                thread.start()
+                self._downloadThreads.append(thread)
+
+        self.downloadNum = new_download_num
 
     def RunDownload(self, index):
         while True:

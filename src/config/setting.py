@@ -97,7 +97,12 @@ class Setting:
     IsNotShowCloseTip = SettingValue("GeneraSetting", 0, False)
     ShowCloseType = SettingValue("GeneraSetting", 0, False)
 
-    MultiNum = SettingValue("GeneraSetting", 5, True)
+    MultiNum = SettingValue("GeneraSetting", 8, True)
+    ThreadNum = SettingValue("GeneraSetting", 8, True)
+    DownloadThreadNum = SettingValue("GeneraSetting", 5, True)
+    ConvertThreadNum = SettingValue("GeneraSetting", 3, True)
+    ChunkSize = SettingValue("GeneraSetting", 8192, True)
+    ProgressInterval = SettingValue("GeneraSetting", 0.2, True)
 
     # 代理设置
     IsHttpProxy = SettingValue("ProxySetting", 0, False, ["", "Http", "Sock5", "system"])

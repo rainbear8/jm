@@ -92,7 +92,12 @@ class SettingView(QtWidgets.QWidget, Ui_SettingNew):
         self.downScale.valueChanged.connect(partial(self.SpinBoxEvent, Setting.DownloadScale))
         self.lookMaxBox.valueChanged.connect(partial(self.SpinBoxEvent, Setting.LookMaxNum))
         self.coverMaxBox.valueChanged.connect(partial(self.SpinBoxEvent, Setting.CoverMaxNum))
-        self.threadSpin.valueChanged.connect(partial(self.SpinBoxEvent, Setting.MultiNum))
+        self.threadSpin.valueChanged.connect(partial(self.ThreadSpinBoxEvent, Setting.MultiNum))
+        self.httpThreadSpin.valueChanged.connect(partial(self.HttpThreadSpinBoxEvent, Setting.ThreadNum))
+        self.nasThreadSpin.valueChanged.connect(partial(self.SpinBoxEvent, Setting.DownloadThreadNum))
+        self.convertThreadSpin.valueChanged.connect(partial(self.SpinBoxEvent, Setting.ConvertThreadNum))
+        self.chunkSizeSpin.valueChanged.connect(partial(self.SpinBoxEvent, Setting.ChunkSize))
+        self.progressIntervalSpin.valueChanged.connect(partial(self.ProgressSpinBoxEvent, Setting.ProgressInterval))
 
         self.generalButton.clicked.connect(partial(self.MoveToLabel, self.generalLabel))
         # self.readButton.clicked.connect(partial(self.MoveToLabel, self.readLabel))
@@ -219,6 +224,33 @@ class SettingView(QtWidgets.QWidget, Ui_SettingNew):
         self.CheckMsgLabel()
         return
 
+    def ThreadSpinBoxEvent(self, setItem, value):
+        assert isinstance(setItem, SettingValue)
+        setItem.SetValue(int(value))
+        # 动态更新下载线程数
+        from server.server import Server
+        try:
+            Server().UpdateDownloadThreads()
+        except Exception as es:
+            Log.Error("更新下载线程数失败: " + str(es))
+        QtOwner().ShowMsgOne(Str.GetStr(Str.SaveSuc))
+        self.CheckMsgLabel()
+        return
+
+    def HttpThreadSpinBoxEvent(self, setItem, value):
+        assert isinstance(setItem, SettingValue)
+        setItem.SetValue(int(value))
+        QtOwner().ShowMsgOne("HTTP线程数设置已保存，重启后生效")
+        self.CheckMsgLabel()
+        return
+
+    def ProgressSpinBoxEvent(self, setItem, value):
+        assert isinstance(setItem, SettingValue)
+        setItem.SetValue(float(value))
+        QtOwner().ShowMsgOne(Str.GetStr(Str.SaveSuc))
+        self.CheckMsgLabel()
+        return
+
     def OpenDohView(self):
         view = DohDnsView(QtOwner().owner)
         view.show()
@@ -290,6 +322,11 @@ class SettingView(QtWidgets.QWidget, Ui_SettingNew):
         # self.downNoise.setCurrentIndex(Setting.DownloadNoise.value)
         self.downScale.setValue(Setting.DownloadScale.value)
         self.threadSpin.setValue(Setting.MultiNum.value)
+        self.httpThreadSpin.setValue(Setting.ThreadNum.value)
+        self.nasThreadSpin.setValue(Setting.DownloadThreadNum.value)
+        self.convertThreadSpin.setValue(Setting.ConvertThreadNum.value)
+        self.chunkSizeSpin.setValue(Setting.ChunkSize.value)
+        self.progressIntervalSpin.setValue(Setting.ProgressInterval.value)
         # self.downModel.setCurrentIndex(Setting.DownloadModel.value)
         self.coverModelName.setText(Setting.CoverLookModelName.value)
         self.readModelName.setText(Setting.LookModelName.value)

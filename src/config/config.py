@@ -1,7 +1,7 @@
 
 
 ProjectName = "JMComic"
-ThreadNum = 5                  # 线程
+ThreadNum = 8                  # 线程
 DownloadThreadNum = 5          # 下载线程
 ConvertThreadNum = 3           # 转换线程
 ChatSavePath = "chat"

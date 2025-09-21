@@ -1138,6 +1138,110 @@ class Ui_SettingNew(object):
 
         self.verticalLayout_14.addLayout(self.horizontalLayout_8)
 
+        # HTTP线程数设置
+        self.label_http_thread = QLabel(self.frame)
+        self.label_http_thread.setObjectName(u"label_http_thread")
+        self.label_http_thread.setFont(font3)
+        self.verticalLayout_14.addWidget(self.label_http_thread)
+
+        self.horizontalLayout_http = QHBoxLayout()
+        self.horizontalLayout_http.setObjectName(u"horizontalLayout_http")
+        self.httpThreadSpin = WheelSpinBox(self.frame)
+        self.httpThreadSpin.setObjectName(u"httpThreadSpin")
+        self.httpThreadSpin.setMinimumSize(QSize(60, 0))
+        self.httpThreadSpin.setMinimum(2)
+        self.httpThreadSpin.setMaximum(20)
+        self.httpThreadSpin.setValue(8)
+        self.horizontalLayout_http.addWidget(self.httpThreadSpin)
+
+        self.horizontalSpacer_http = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_http.addItem(self.horizontalSpacer_http)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_http)
+
+        # NAS下载线程数设置
+        self.label_nas_thread = QLabel(self.frame)
+        self.label_nas_thread.setObjectName(u"label_nas_thread")
+        self.label_nas_thread.setFont(font3)
+        self.verticalLayout_14.addWidget(self.label_nas_thread)
+
+        self.horizontalLayout_nas = QHBoxLayout()
+        self.horizontalLayout_nas.setObjectName(u"horizontalLayout_nas")
+        self.nasThreadSpin = WheelSpinBox(self.frame)
+        self.nasThreadSpin.setObjectName(u"nasThreadSpin")
+        self.nasThreadSpin.setMinimumSize(QSize(60, 0))
+        self.nasThreadSpin.setMinimum(1)
+        self.nasThreadSpin.setMaximum(20)
+        self.nasThreadSpin.setValue(5)
+        self.horizontalLayout_nas.addWidget(self.nasThreadSpin)
+
+        self.horizontalSpacer_nas = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_nas.addItem(self.horizontalSpacer_nas)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_nas)
+
+        # 转换线程数设置
+        self.label_convert_thread = QLabel(self.frame)
+        self.label_convert_thread.setObjectName(u"label_convert_thread")
+        self.label_convert_thread.setFont(font3)
+        self.verticalLayout_14.addWidget(self.label_convert_thread)
+
+        self.horizontalLayout_convert = QHBoxLayout()
+        self.horizontalLayout_convert.setObjectName(u"horizontalLayout_convert")
+        self.convertThreadSpin = WheelSpinBox(self.frame)
+        self.convertThreadSpin.setObjectName(u"convertThreadSpin")
+        self.convertThreadSpin.setMinimumSize(QSize(60, 0))
+        self.convertThreadSpin.setMinimum(1)
+        self.convertThreadSpin.setMaximum(10)
+        self.convertThreadSpin.setValue(3)
+        self.horizontalLayout_convert.addWidget(self.convertThreadSpin)
+
+        self.horizontalSpacer_convert = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_convert.addItem(self.horizontalSpacer_convert)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_convert)
+
+        # Chunk大小设置
+        self.label_chunk = QLabel(self.frame)
+        self.label_chunk.setObjectName(u"label_chunk")
+        self.label_chunk.setFont(font3)
+        self.verticalLayout_14.addWidget(self.label_chunk)
+
+        self.horizontalLayout_chunk = QHBoxLayout()
+        self.horizontalLayout_chunk.setObjectName(u"horizontalLayout_chunk")
+        self.chunkSizeSpin = WheelSpinBox(self.frame)
+        self.chunkSizeSpin.setObjectName(u"chunkSizeSpin")
+        self.chunkSizeSpin.setMinimumSize(QSize(80, 0))
+        self.chunkSizeSpin.setMinimum(1024)
+        self.chunkSizeSpin.setMaximum(65536)
+        self.chunkSizeSpin.setSingleStep(1024)
+        self.chunkSizeSpin.setValue(8192)
+        self.horizontalLayout_chunk.addWidget(self.chunkSizeSpin)
+
+        self.horizontalSpacer_chunk = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_chunk.addItem(self.horizontalSpacer_chunk)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_chunk)
+
+        # 进度更新间隔设置
+        self.label_progress = QLabel(self.frame)
+        self.label_progress.setObjectName(u"label_progress")
+        self.label_progress.setFont(font3)
+        self.verticalLayout_14.addWidget(self.label_progress)
+
+        self.horizontalLayout_progress = QHBoxLayout()
+        self.horizontalLayout_progress.setObjectName(u"horizontalLayout_progress")
+        self.progressIntervalSpin = QDoubleSpinBox(self.frame)
+        self.progressIntervalSpin.setObjectName(u"progressIntervalSpin")
+        self.progressIntervalSpin.setMinimumSize(QSize(80, 0))
+        self.progressIntervalSpin.setMinimum(0.1)
+        self.progressIntervalSpin.setMaximum(2.0)
+        self.progressIntervalSpin.setSingleStep(0.1)
+        self.progressIntervalSpin.setValue(0.2)
+        self.progressIntervalSpin.setDecimals(1)
+        self.progressIntervalSpin.setSuffix("s")
+        self.horizontalLayout_progress.addWidget(self.progressIntervalSpin)
+
+        self.horizontalSpacer_progress = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout_progress.addItem(self.horizontalSpacer_progress)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_progress)
+
 
         self.verticalLayout_4.addWidget(self.frame)
 
@@ -1405,7 +1509,12 @@ class Ui_SettingNew(object):
         self.saveNameButton0.setText(QCoreApplication.translate("SettingNew", u"\u4f5c\u54c1\u540d\uff08\u9ed8\u8ba4\uff09", None))
         self.saveNameButton1.setText(QCoreApplication.translate("SettingNew", u"[\u4f5c\u8005\u540d]\u4f5c\u54c1\u540d", None))
         self.saveNameButton2.setText(QCoreApplication.translate("SettingNew", u"\u4f5c\u8005\u540d\u5355\u72ec\u76ee\u5f55\uff08\u5982\u65e0\u4f5c\u8005\u540d\u5c06\u653e\u5165default\u76ee\u5f55\uff09", None))
-        self.label_17.setText(QCoreApplication.translate("SettingNew", u"JM\u56fe\u7247\u89e3\u5bc6\u8fdb\u7a0b\u6570\u91cf\uff08\u5bf9\u5e94\u4e0b\u8f7d\u7ebf\u7a0b\u6570\u91cf\uff0c\u9700\u91cd\u542f\uff09", None))
+        self.label_17.setText(QCoreApplication.translate("SettingNew", u"JM\u56fe\u7247\u89e3\u5bc6\u8fdb\u7a0b\u6570\u91cf\uff08\u5bf9\u5e94\u4e0b\u8f7d\u7ebf\u7a0b\u6570\u91cf\uff09", None))
+        self.label_http_thread.setText(QCoreApplication.translate("SettingNew", u"HTTP\u8bf7\u6c42\u7ebf\u7a0b\u6570\uff08\u9700\u91cd\u542f\uff09", None))
+        self.label_nas_thread.setText(QCoreApplication.translate("SettingNew", u"NAS\u4e0a\u4f20\u7ebf\u7a0b\u6570", None))
+        self.label_convert_thread.setText(QCoreApplication.translate("SettingNew", u"\u683c\u5f0f\u8f6c\u6362\u7ebf\u7a0b\u6570", None))
+        self.label_chunk.setText(QCoreApplication.translate("SettingNew", u"\u4e0b\u8f7d\u5757\u5927\u5c0f\uff08\u5b57\u8282\uff09", None))
+        self.label_progress.setText(QCoreApplication.translate("SettingNew", u"\u8fdb\u5ea6\u66f4\u65b0\u95f4\u9694\uff08\u79d2\uff09", None))
         self.label_21.setText(QCoreApplication.translate("SettingNew", u"\u4e0b\u8f7d\u548c\u7f13\u5b58\u8def\u5f84\uff08\u7f13\u5b58\u6587\u4ef6\u9700\u81ea\u5df1\u624b\u52a8\u6e05\u9664\uff09", None))
         self.setDirButton.setText(QCoreApplication.translate("SettingNew", u"\u8bbe\u7f6e\u76ee\u5f55", None))
         self.label_3.setText(QCoreApplication.translate("SettingNew", u"\u4e0b\u8f7d", None))

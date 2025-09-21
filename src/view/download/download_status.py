@@ -146,7 +146,8 @@ class DownloadStatus(QtTaskBase):
                 if addNum <= 0:
                     break
 
-        convertNum = config.ConvertThreadNum
+        from config.setting import Setting
+        convertNum = Setting.ConvertThreadNum.value
         addNum = convertNum - len(self.convertingList)
         if addNum > 0:
             for task in list(self.convertList):
